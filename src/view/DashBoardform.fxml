@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="DashBoardAnchorPane" prefHeight="553.0" prefWidth="602.0" style="-fx-background-color: #C0C0C0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardformController">
+   <children>
+      <Label alignment="CENTER" layoutX="132.0" layoutY="11.0" prefHeight="51.0" prefWidth="338.0" text="POS System">
+         <font>
+            <Font name="Segoe UI Bold" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="134.0" fitWidth="144.0" layoutX="93.0" layoutY="90.0" onMouseClicked="#btnManageCustomers_OnAction" onMouseEntered="#btnCustomer_playMouseEnterAnimation" onMouseExited="#btnCustomer_playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/1t.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="75.0" layoutY="233.0" prefHeight="51.0" prefWidth="204.0" text="Manage Customers">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="134.0" fitWidth="156.0" layoutX="361.0" layoutY="90.0" onMouseClicked="#btnManageitems_OnAction" onMouseEntered="#btnMngItems_playMouseEnterAnimation" onMouseExited="#btnMngItems_playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/trolley.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="373.0" layoutY="233.0" prefHeight="51.0" prefWidth="204.0" text="Manage Items">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="126.0" fitWidth="134.0" layoutX="101.0" layoutY="302.0" onMouseClicked="#btnPlaceOrders_OnAction" onMouseEntered="#btnPlaceOrders_playMouseEnterAnimation" onMouseExited="#btnPlaceOrders_playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/webshop.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="68.0" layoutY="436.0" prefHeight="51.0" prefWidth="204.0" text="Place Orders">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="126.0" fitWidth="134.0" layoutX="361.0" layoutY="298.0" onMouseClicked="#btnSearchOrders_OnAction" onMouseEntered="#btnSearchOrders_playMouseEnterAnimation" onMouseExited="#btnSearchOrders_playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/seo.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="339.0" layoutY="436.0" prefHeight="51.0" prefWidth="204.0" text="Search Orders">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
