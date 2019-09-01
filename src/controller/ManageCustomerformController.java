@@ -136,17 +136,35 @@ public class ManageCustomerformController {
 //        customerlist.add(new CustomerTable("C00" + (num + 1), txtField_Name.getText(), txtField_Address.getText()));
 //        System.out.println(num);
 
-        if (btnSave.getText().equals("Save")) {
-            ObservableList<CustomerTable> customers = tblViewCustDetails.getItems();
-            customers.add(new CustomerTable(txtField_ID.getText(), txtField_Name.getText(),
-                    txtField_Address.getText()));
-            btnNewCust_OnAction(actionEvent);
+        String name = txtField_Name.getText();
+        String address = txtField_Address.getText();
+        if (name.matches("^[A-Za-z]{3,10}$")) {
+            if (address.matches("\\b[A-Za-z,.\\s]+\\b")) {
+
+
+                if (btnSave.getText().equals("Save")) {
+                    ObservableList<CustomerTable> customers = tblViewCustDetails.getItems();
+                    customers.add(new CustomerTable(txtField_ID.getText(), txtField_Name.getText(),
+                            txtField_Address.getText()));
+                    btnNewCust_OnAction(actionEvent);
+                } else {
+                    CustomerTable selectedItem = tblViewCustDetails.getSelectionModel().getSelectedItem();
+                    selectedItem.setName(txtField_Name.getText());
+                    selectedItem.setAddress(txtField_Address.getText());
+                    tblViewCustDetails.refresh();
+                    btnNewCust_OnAction(actionEvent);
+                }
+
+
+            } else {
+                txtField_Address.requestFocus();
+                System.out.println("Please enter a valid address.");
+            }
+
+
         } else {
-            CustomerTable selectedItem = tblViewCustDetails.getSelectionModel().getSelectedItem();
-            selectedItem.setName(txtField_Name.getText());
-            selectedItem.setAddress(txtField_Address.getText());
-            tblViewCustDetails.refresh();
-            btnNewCust_OnAction(actionEvent);
+            txtField_Name.requestFocus();
+            System.out.println("Please enter a valid name");
         }
 
 

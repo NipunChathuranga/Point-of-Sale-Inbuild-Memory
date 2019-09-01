@@ -166,76 +166,83 @@ public class PlaceOrderformController {
     }
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
+        try {
 
-        int qty = Integer.parseInt(txtFieldQty.getText());
-        int qtyonhand = Integer.parseInt(txtFieldQtyonHand.getText());
-        int price = Integer.parseInt(txtFieldUnitPrice.getText());
-
-        if (qty <= 0 || qty > qtyonhand) {
-            new Alert(Alert.AlertType.ERROR, "Invalid Qty", ButtonType.OK).show();
-            txtFieldQty.requestFocus();
-            txtFieldQty.selectAll();
-            return;
-        }
-
-        String selectedItemCode = cmbItemCode.getSelectionModel().getSelectedItem();
-        ObservableList<CartTM> details = tblPlaceOrderView.getItems();
+            int qty = Integer.parseInt(txtFieldQty.getText());
+            int qtyonhand = Integer.parseInt(txtFieldQtyonHand.getText());
+            int price = Integer.parseInt(txtFieldUnitPrice.getText());
 
 
-        boolean isExists = false;
-        for (CartTM detail : tblPlaceOrderView.getItems()) {
-            if (detail.getItemcode().equals(selectedItemCode)) {
-                isExists = true;
-
-                if (btnSave.getText().equals("Update")) {
-                    detail.setQty(qty);
-                } else {
-                    detail.setQty(detail.getQty() + qty);
-                }
-                detail.setTot(detail.getQty() * detail.getUnitprice());
-                tblPlaceOrderView.refresh();
-                break;
+            if (qty <= 0 || qty > qtyonhand) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Qty", ButtonType.OK).show();
+                txtFieldQty.requestFocus();
+                txtFieldQty.selectAll();
+                return;
             }
-        }
 
-        if (!isExists) {
-            Button btnDelete = new Button("Delete");
-            CartTM detailTM = new CartTM(cmbItemCode.getSelectionModel().getSelectedItem(),
-                    txtFieldDescription.getText(),
-                    qty,
-                    price,
-                    qty * price,
-                    btnDelete
-            );
-            btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    for (ItemTM tempItem : tempItems) {
-                        if (tempItem.getItemcode().equals(detailTM.getItemcode())) {
-                            // Let's restore the qty
-                            int qtyOnHand = tempItem.getQtyonhand() + detailTM.getQty();
-                            tempItem.setQtyonhand(qtyOnHand);
-                            break;
-                        }
+            String selectedItemCode = cmbItemCode.getSelectionModel().getSelectedItem();
+            ObservableList<CartTM> details = tblPlaceOrderView.getItems();
+
+
+            boolean isExists = false;
+            for (CartTM detail : tblPlaceOrderView.getItems()) {
+                if (detail.getItemcode().equals(selectedItemCode)) {
+                    isExists = true;
+
+                    if (btnSave.getText().equals("Update")) {
+                        detail.setQty(qty);
+                    } else {
+                        detail.setQty(detail.getQty() + qty);
                     }
-                    tblPlaceOrderView.getItems().remove(detailTM);
-                    calculateTotal();
-                    enablePlaceOrderButton();
-                    cmbItemCode.requestFocus();
-                    cmbItemCode.getSelectionModel().clearSelection();
-                    tblPlaceOrderView.getSelectionModel().clearSelection();
+                    detail.setTot(detail.getQty() * detail.getUnitprice());
+                    tblPlaceOrderView.refresh();
+                    break;
                 }
-            });
-            details.add(detailTM);
+            }
+
+            if (!isExists) {
+                Button btnDelete = new Button("Delete");
+                CartTM detailTM = new CartTM(cmbItemCode.getSelectionModel().getSelectedItem(),
+                        txtFieldDescription.getText(),
+                        qty,
+                        price,
+                        qty * price,
+                        btnDelete
+                );
+                btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        for (ItemTM tempItem : tempItems) {
+                            if (tempItem.getItemcode().equals(detailTM.getItemcode())) {
+                                // Let's restore the qty
+                                int qtyOnHand = tempItem.getQtyonhand() + detailTM.getQty();
+                                tempItem.setQtyonhand(qtyOnHand);
+                                break;
+                            }
+                        }
+                        tblPlaceOrderView.getItems().remove(detailTM);
+                        calculateTotal();
+                        enablePlaceOrderButton();
+                        cmbItemCode.requestFocus();
+                        cmbItemCode.getSelectionModel().clearSelection();
+                        tblPlaceOrderView.getSelectionModel().clearSelection();
+                    }
+                });
+                details.add(detailTM);
+            }
+
+            updateQty(selectedItemCode, qty);
+            // Calculate the grand total
+            calculateTotal();
+            enablePlaceOrderButton();
+            cmbItemCode.requestFocus();
+            cmbItemCode.getSelectionModel().clearSelection();
+            tblPlaceOrderView.getSelectionModel().clearSelection();
+        } catch (NumberFormatException e) {
+            System.out.println("Enter a valid Quantity.");
+
         }
 
-        updateQty(selectedItemCode, qty);
-        // Calculate the grand total
-        calculateTotal();
-        enablePlaceOrderButton();
-        cmbItemCode.requestFocus();
-        cmbItemCode.getSelectionModel().clearSelection();
-        tblPlaceOrderView.getSelectionModel().clearSelection();
 
     }
 
@@ -389,7 +396,7 @@ public class PlaceOrderformController {
 
 
                     }
-                    orderDetails.add(new CartTM(od.getItemCode(), itemDescription, od.getQty(), od.getUnitPrice(),od.getQty()*od.getUnitPrice()));
+                    orderDetails.add(new CartTM(od.getItemCode(), itemDescription, od.getQty(), od.getUnitPrice(), od.getQty() * od.getUnitPrice()));
 
                 }
 

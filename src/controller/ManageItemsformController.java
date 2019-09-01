@@ -58,9 +58,9 @@ public class ManageItemsformController {
                 ItemTM selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
 
                 if (selectedItem == null) {
-                        btnsave.setText("Save");
-                        btnDelete.setDisable(true);
-                        return;
+                    btnsave.setText("Save");
+                    btnDelete.setDisable(true);
+                    return;
                 } else {
                     btnsave.setText("Update");
                     btnsave.setDisable(false);
@@ -80,24 +80,61 @@ public class ManageItemsformController {
     }
 
     public void btnsave_OnAction(ActionEvent actionEvent) {
-        if (btnsave.getText().equals("Save")) {
-            ObservableList<ItemTM> items = tblViewItems.getItems();
-            items.add(new ItemTM(txtFieldItemCode.getText(), txtFieldItemDescription.getText(),
-                    Integer.parseInt(txtFieldQtyonHand.getText()), Integer.parseInt(txtFieldUnitPrice.getText())));
-            btnNewItem_OnAction(actionEvent);
+
+        String desc = txtFieldItemDescription.getText();
+        String qtyonHand = txtFieldQtyonHand.getText();
+        String unitprice = txtFieldUnitPrice.getText();
+        if (desc.matches("^[A-Za-z\\s]+$")) {
+            if (qtyonHand.matches("\\b[0-9]+\\b")) {
+
+                if (unitprice.matches("\\b[0-9]+\\b")) {
+
+                    if (btnsave.getText().equals("Save")) {
+                        ObservableList<ItemTM> items = tblViewItems.getItems();
+                        items.add(new ItemTM(txtFieldItemCode.getText(), txtFieldItemDescription.getText(),
+                                Integer.parseInt(txtFieldQtyonHand.getText()), Integer.parseInt(txtFieldUnitPrice.getText())));
+                        btnNewItem_OnAction(actionEvent);
+                    } else {
+                        ItemTM selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
+                        selectedItem.setDescription(txtFieldItemDescription.getText());
+                        selectedItem.setQtyonhand(Integer.parseInt(txtFieldQtyonHand.getText()));
+                        selectedItem.setUnitprice(Integer.parseInt(txtFieldUnitPrice.getText()));
+                        tblViewItems.refresh();
+                        btnNewItem_OnAction(actionEvent);
+                    }
+
+
+                } else {
+
+                    txtFieldUnitPrice.requestFocus();
+                    System.out.println("Please enter a valid unit price.");
+
+
+                }
+
+            } else {
+
+                txtFieldQtyonHand.requestFocus();
+                System.out.println("Please enter a valid quantity on hand.");
+
+
+            }
+
+
         } else {
-            ItemTM selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
-            selectedItem.setDescription(txtFieldItemDescription.getText());
-            selectedItem.setQtyonhand(Integer.parseInt(txtFieldQtyonHand.getText()));
-            selectedItem.setUnitprice(Integer.parseInt(txtFieldUnitPrice.getText()));
-            tblViewItems.refresh();
-            btnNewItem_OnAction(actionEvent);
+
+            txtFieldItemDescription.requestFocus();
+            System.out.println("Please enter a valid description.");
+
+
         }
+
+
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Are you sure whether you want to delete this customer?",
+                "Are you sure whether you want to delete this item?",
                 ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.get() == ButtonType.YES) {
